@@ -1,0 +1,45 @@
+body {
+	background-color: #808080;
+}
+
+.app {
+	text-align: center;
+}
+
+.form {
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	width: 350px;
+	margin: auto;
+	margin-top: 150px;
+	border: 1px solid #000000;
+	border-radius: 10px;
+}
+
+.label {
+	margin: 10px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.item {
+	padding: 10px;
+	margin: 10px;
+}
+
+.btn {
+	padding: 5px;
+	width: 150px;
+	margin: 10px;
+	align-self: end;
+	cursor: pointer;
+}
+
+.errorLabel {
+	color: red;
+}
+
+.btn:focus {
+	background-color: aquamarine;
+}
