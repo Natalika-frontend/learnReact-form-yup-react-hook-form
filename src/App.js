@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import styles from './App.module.css';
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const sendFormData = (formData) => {
 	console.log(formData)
@@ -26,7 +26,9 @@ export const App = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: {isDirty, isValid, errors},
+		formState: {isDirty, isValid, errors, },
+		setValue,
+		trigger,
 	} = useForm({
 		defaultValues: {
 			email: '',
@@ -42,9 +44,16 @@ export const App = () => {
 
 	const submitButtonRef = useRef(null);
 
-	if (!isDirty && !isValid) {
-		submitButtonRef.current.focus();
-	}
+	useEffect(() => {
+		if (isValid) {
+			submitButtonRef.current.focus();
+		}
+	}, [isValid]);
+
+	const handleBlur = async (fieldName, value) => {
+		await setValue(fieldName, value);
+		await trigger(fieldName);
+	};
 
 	return (
 		<div className={styles.app}>
@@ -55,6 +64,7 @@ export const App = () => {
 					   type="email"
 					   placeholder="Введите email"
 					   {...register('email')}
+					   onBlur={(e) => handleBlur('email', e.target.value)}
 				/>
 				{passwordError && <div className={styles.errorLabel}>{passwordError}</div>}
 				<input
@@ -62,6 +72,7 @@ export const App = () => {
 					type="password"
 					placeholder="Введите пароль"
 					{...register('password')}
+					onBlur={(e) => handleBlur('password', e.target.value)}
 				/>
 				{repeatPasswordError && <div className={styles.errorLabel}>{repeatPasswordError}</div>}
 				<input
@@ -70,6 +81,7 @@ export const App = () => {
 					type="password"
 					placeholder="Повторите ваш пароль"
 					{...register('repeatPassword')}
+					onBlur={(e) => handleBlur('repeatPassword', e.target.value)}
 				/>
 				<button className={styles.btn} ref={submitButtonRef} type="submit"
 						disabled={!isDirty || !isValid}>Зарегистрироваться
